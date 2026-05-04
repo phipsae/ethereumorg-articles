@@ -8,7 +8,7 @@ Ethereum is built for the second case, where neutral access and verifiable commi
 
 ## Decentralization
 
-The first reason to build on Ethereum is that the system is not operated by one party. If your app settles assets, records ownership, coordinates markets, or becomes infrastructure for other apps, you do not want the base layer to depend on a company account, a single data center, or one implementation being correct forever.
+If your app settles assets, records ownership, coordinates markets, or becomes infrastructure for other apps, you do not want the base layer to depend on a company account, a single data center, or one implementation being correct forever.
 
 Ethereum runs on a network of computers, called nodes, that each store a copy of the chain and check every transaction. Each node runs client software. A subset of nodes, called validators, take turns proposing and confirming new blocks through a process called consensus. To participate, validators put up ETH as collateral, called stake, that they lose if they break the rules. Around 13,700 to 14,000 nodes were tracked in Etherscan's node tracker in April 2026, distributed across the United States, Germany, China, the United Kingdom, Russia, Japan, and dozens of other countries.
 
@@ -24,7 +24,7 @@ That priority has been tested. Ethereum has never had a full chain halt since ge
 
 A finality stall is not the same as a chain halt. New blocks kept being produced, transactions kept being included, and most users and applications kept working. What stalled was Ethereum's strongest settlement guarantee. Under normal consensus assumptions, a block older than roughly 13 minutes cannot be reverted. Bridges, exchanges, and other systems that wait for finality before crediting deposits would have paused those flows. The chain itself recovered automatically once enough validators caught up, without manual intervention.
 
-For builders, that history matters because reliability is not an abstract virtue. If other people are going to hold assets in your contracts, route orders through your market, or build on your primitive, they need the foundation underneath it to keep running through bugs, client failures, and institutional pressure.
+For builders, that history matters. If other people are going to hold assets in your contracts, route orders through your market, or build on your primitive, they need the foundation underneath it to keep running through bugs, client failures, and institutional pressure.
 
 ## Censorship resistance
 
