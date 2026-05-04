@@ -42,7 +42,7 @@ Tornado Cash is a privacy mixer contract that breaks the onchain link between de
 
 That looked alarming, and it was. Then the number fell. By early 2023 it was below 50%, and through 2023 it generally ranged between roughly 27% and 47% depending on the week. New relays launched explicitly without filters, including Ultra Sound and Agnostic, and proposers were free to add them to their MEV-Boost setup. No one could force every proposer onto a filtering relay, so the share could not stay where it peaked. OFAC removed Tornado Cash from the sanctions list on March 21, 2025, but the episode remains Ethereum's clearest censorship-resistance stress test.
 
-Ethereum is also moving more of this guarantee into the protocol itself. A planned upgrade called FOCIL (EIP-7805) adds inclusion lists. Randomly selected validators publish transactions they see in the public mempool, and the next block is expected to satisfy those lists. If a block ignores them, the rest of the network can reject it. So no one can stop your users from using your app.
+Ethereum is also moving more of this guarantee into the protocol itself. A planned upgrade called FOCIL (EIP-7805) adds inclusion lists. Randomly selected validators publish transactions they see in the public mempool, and the next block is expected to satisfy those lists. If a block ignores them, the rest of the network can reject it. So noone can stop your users from using your app. 
 
 ---
 
