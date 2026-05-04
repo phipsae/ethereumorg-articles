@@ -4,9 +4,7 @@ Builders choose infrastructure by the promises their app needs to keep.
 
 Most software promises depend on an operator. A cloud provider keeps the server running. A platform keeps the account open. A payment processor keeps the merchant enabled. An API provider keeps the key valid. That is fine for many products. It is not enough when the product's value depends on neutral access, shared state, and commitments that users and other developers can verify for themselves.
 
-Ethereum is built for that second category. No one owns it. The chain runs across many countries, many operators, and multiple independent client implementations. Its rules can change through public protocol upgrades, but no single company, validator, sequencer, or foundation can quietly rewrite them on its own.
-
-For a builder, that means Ethereum is not just a place to host code. It is a place to make public commitments. Users can keep reaching what you deploy, other developers can build on it without asking you, and your app can continue to work even when any one party, including you, stops cooperating.
+Ethereum is built for that second category. No one owns it. The chain runs across many countries, many operators, and multiple independent client implementations, and no single company, validator, sequencer, or foundation can quietly rewrite the rules. For a builder, that means it is not just a place to host code. It is a place to make public commitments. You can ship without asking anyone, users can keep reaching what you deploy, other developers can build on it without your permission, and your app can continue to work even when any one party, including you, stops cooperating.
 
 ## Decentralization
 
