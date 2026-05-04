@@ -74,9 +74,9 @@ The rails are already in place. Smart contracts, stablecoins, and account abstra
 
 For any builder picking a chain to ship on, this is where the next user class is forming. The rails and standards are live, and there is no future protocol to wait for.
 
-Decentralization, censorship resistance, permissionless deployment, and composability are not separate selling points. They reinforce each other. Decentralization makes censorship resistance credible. Censorship resistance makes permissionless access meaningful. Permissionless access makes composability possible. Composability turns individual apps into shared infrastructure.
+## Conclusion
 
-Ethereum is not the best substrate for every workload. If your app only needs a fast private database, use one. If your product's value depends on neutral access, shared state, open integration, and commitments that can survive any single party, Ethereum is the platform built for that.
+Decentralization, censorship resistance, permissionless deployment, and composability are not separate selling points. They reinforce each other. Decentralization makes censorship resistance credible and lets users keep reaching what's shipped. Permissionless deployment lets builders ship. Composability turns those apps into shared infrastructure. Autonomous agents can transact through it and no one can stop them. What you ship is a public commitment. It keeps running without you.
 
 ## Further Reading
 
