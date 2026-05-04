@@ -42,7 +42,7 @@ Tornado Cash is a privacy mixer contract that breaks the onchain link between de
 
 That looked alarming, and it was. Then the number fell. By early 2023 it was below 50%, and through 2023 it generally ranged between roughly 27% and 47% depending on the week. New relays launched explicitly without filters, including Ultra Sound and Agnostic, and proposers were free to add them to their MEV-Boost setup. No one could force every proposer onto a filtering relay, so the share could not stay where it peaked. OFAC removed Tornado Cash from the sanctions list on March 21, 2025, but the episode remains Ethereum's clearest censorship-resistance stress test.
 
-Ethereum is also moving more of this guarantee into the protocol itself. A planned upgrade called FOCIL (EIP-7805) adds inclusion lists. Randomly selected validators publish transactions they see in the public mempool, and the next block is expected to satisfy those lists. If a block ignores them, the rest of the network can reject it. So noone can stop your users from using your app. 
+Ethereum is also moving more of this guarantee into the protocol itself. A planned upgrade called FOCIL (EIP-7805) adds inclusion lists. Randomly selected validators publish transactions they see in the public mempool, and the next block is expected to satisfy those lists. If a block ignores them, the rest of the network can reject it. So no one can stop your users from using your app.
 
 ---
 
@@ -54,9 +54,9 @@ Deploying on Ethereum does not require a partnership, account, listing approval,
 
 That changes the builder model. On a platform, the platform owner can change terms, revoke keys, block regions, remove apps, or make access conditional on a business relationship. On Ethereum, the protocol evaluates transactions by the same public rules for any caller. A contract deployed today runs by those public rules for every address as long as the chain keeps running.
 
-This does not remove every dependency. Frontends can be taken down. RPC providers can filter. Wallets can choose what they display. App teams can still write upgradeable contracts or admin controls that users need to evaluate. But the base execution environment is open. A user can call the contract directly. Another developer can build a new interface. An indexer can read the state. A competing app can compose with the same contracts.
+This does not remove every dependency. Most users don't reach your contracts directly. They go through a frontend, a wallet, and an RPC provider, and any of those layers can break or filter. Frontends can be taken down. RPC providers, the services that route most app and wallet requests to the chain, can refuse to forward transactions or block specific regions and addresses. Wallets can choose what they display.
 
-That is why Ethereum apps can become public infrastructure instead of private integrations. Standard ERC-20 interfaces are callable by any address. DEX routers quote swaps to any caller. Lending markets let any address open a position if it satisfies the protocol's rules. There is no API key to revoke and no waitlist to clear.
+The base execution environment stays open underneath. If your frontend goes down, a user can still call the contract directly, and another developer can build a new interface. If a wallet stops supporting your token, the contract still works. If one RPC provider filters, an app can route through another or run its own node to reach the network.
 
 ---
 
