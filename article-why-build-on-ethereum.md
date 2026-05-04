@@ -8,8 +8,6 @@ Ethereum is built for that second category. No one owns it. The chain runs acros
 
 For a builder, that means Ethereum is not just a place to host code. It is a place to make public commitments. Users can keep reaching what you deploy, other developers can build on it without asking you, and your app can continue to work even when any one party, including you, stops cooperating.
 
----
-
 ## Decentralization
 
 The first reason to build on Ethereum is that the system is not operated by one party. If your app settles assets, records ownership, coordinates markets, or becomes infrastructure for other apps, you do not want the base layer to depend on a company account, a single data center, or one implementation being correct forever.
@@ -30,8 +28,6 @@ A finality stall is not the same as a chain halt. New blocks kept being produced
 
 For builders, that history matters because reliability is not an abstract virtue. If other people are going to hold assets in your contracts, route orders through your market, or build on your primitive, they need the foundation underneath it to keep running through bugs, client failures, and institutional pressure.
 
----
-
 ## Censorship resistance
 
 Decentralization is the structure. Censorship resistance is one of the practical things it buys. Users should not need permission from a company, government, relay, validator, RPC provider, or app operator to send a valid transaction to your contracts.
@@ -43,8 +39,6 @@ Tornado Cash is a privacy mixer contract that breaks the onchain link between de
 That looked alarming, and it was. Then the number fell. By early 2023 it was below 50%, and through 2023 it generally ranged between roughly 27% and 47% depending on the week. New relays launched explicitly without filters, including Ultra Sound and Agnostic, and proposers were free to add them to their MEV-Boost setup. No one could force every proposer onto a filtering relay, so the share could not stay where it peaked. OFAC removed Tornado Cash from the sanctions list on March 21, 2025, but the episode remains Ethereum's clearest censorship-resistance stress test.
 
 Ethereum is also moving more of this guarantee into the protocol itself. A planned upgrade called FOCIL (EIP-7805) adds inclusion lists. Randomly selected validators publish transactions they see in the public mempool, and the next block is expected to satisfy those lists. If a block ignores them, the rest of the network can reject it. So no one can stop your users from using your app.
-
----
 
 ## Permissionless
 
@@ -58,41 +52,31 @@ This does not remove every dependency. Most users don't reach your contracts dir
 
 The base execution environment stays open underneath. If your frontend goes down, a user can still call the contract directly, and another developer can build a new interface. If a wallet stops supporting your token, the contract still works. If one RPC provider filters, an app can route through another or run its own node to reach the network.
 
----
-
 ## Composability
 
-Permissionlessness lets you ship. Composability is what makes shipping on Ethereum different from shipping on a closed platform. Contracts are public building blocks, and every new contract can read from or call the contracts already deployed.
+Permissionlessness gets your code onto the chain. Once it's there, no one can take it down, so other developers can build on top of your contracts, and you can build on theirs.
 
-WETH is the cleanest example. The contract sits at one fixed mainnet address, held about 1.8 million WETH in April 2026, had roughly 3.25 million holders, and acts as a common unit across DEXs, lending markets, vaults, and bridges. It is not an integration partner. It is code that thousands of other contracts and apps can use directly.
+WETH is the cleanest example. It's a contract that wraps ETH so it can be used like a standard token in other contracts. It sits at one fixed mainnet address, holds about 1.8 million WETH as of May 2026, has roughly 3.25 million holders, and acts as a common unit across DEXs, lending markets, vaults, and bridges. It is code that thousands of other contracts and apps can use directly.
 
-That pattern repeats across the ecosystem. From genesis to early 2025, Ethereum saw tens of millions of contract deployments and roughly 2.5 million unique bytecodes by Zellic's count. Standards like ERC-20 and ERC-721 became coordination layers. A token your contract emits can be traded on a DEX, borrowed against in a money market, indexed by analytics tools, displayed in wallets, and bridged or wrapped by other systems without each team negotiating a custom agreement.
+That pattern repeats across the ecosystem. From genesis to early 2025, Ethereum saw tens of millions of contract deployments and roughly 2.5 million unique bytecodes by Zellic's count. Standards like ERC-20 for fungible tokens and ERC-721 for non-fungible tokens (NFTs) became coordination layers. A token your contract emits can be traded on a DEX, borrowed against in a money market, indexed by analytics tools, displayed in wallets, and bridged or wrapped by other systems without each team negotiating a custom agreement.
 
-The builder consequence is the difference between shipping a feature and shipping a primitive. A feature serves your own app. A primitive becomes something other people can compose with, route through, fork, extend, and make more useful than you could have planned. That compounding effect is why liquidity, standards, and developer attention matter so much.
-
-As of April 2026, roughly $55 to 57 billion sat in DeFi on Ethereum L1 alone, with more value secured by Ethereum through L2s. That is not just capital. It is live infrastructure, including assets, markets, oracles, wallets, account systems, governance contracts, bridges, analytics, and developer tools that a new builder can plug into on day one.
-
----
+As of May 2026, around $46 billion sat in DeFi on Ethereum L1, with roughly another $41 billion in value secured by Ethereum through L2s. That money is locked inside thousands of working protocols, including assets, markets, oracles, wallets, account systems, governance contracts, bridges, analytics, and developer tools. All of it is code that a new builder can call directly on day one, instead of building from scratch or waiting for partnerships.
 
 ## The agent economy
 
-AI agents are an emerging example of why Ethereum's properties matter. They are not the only reason to build on Ethereum, and the market is still early. But they make the infrastructure problem easy to see.
+Composability gets more interesting when the participants are not humans clicking buttons. AI agents act on a user's behalf continuously, hold balances, sign transactions, and call contracts on their own schedule. The properties that make Ethereum useful for human builders become hard requirements when the actor is a process that needs to keep running without permission from a host.
 
-On a typical hosted stack, an agent's identity is rented from a platform account that can be revoked. Its payments depend on a human's card, billing account, or API key. Its rules run on a server controlled by its operator. Its audit trail is whatever the operator exposes. Its continuity depends on a host that can disappear.
+On a typical hosted stack, an agent's identity is rented from a platform account that can be revoked. Its payments depend on a human's card or API key. Its rules run on a server its operator controls. Its continuity depends on a host that can disappear. Every one of those dependencies is what Ethereum's base layer is designed to remove.
 
-Ethereum gives agents a different shape. An agent can own keys, hold and spend value, call contracts, leave a public audit trail, and interact with other systems through shared standards. Counterparties do not have to trust the agent's operator to report what happened, because the important state transitions can happen in public.
+An agent on Ethereum can own keys and run against rules no operator can revoke. Its transactions go through the same rotating cast of validators, builders, and relays that protects any other address from targeted blocking. Its payments and balances live in the same stablecoins, lending markets, and identity primitives the rest of the ecosystem uses, so it can settle value with any counterparty that speaks the same standards. Counterparties do not have to trust the operator to report what happened, because the important state transitions happen in public.
 
-Some pieces of that stack are now live or emerging. ERC-8004 defines onchain registries for agent identity, reputation, and validation; the standard was created in 2025 and early deployments began in 2026. x402 uses the HTTP 402 status code to let clients, including agents, pay APIs and digital services in stablecoins without traditional accounts. Adoption numbers for both are still early and often come from project-adjacent sources, so they should be treated as directional rather than settled proof.
+The rails are already in place. Smart contracts, stablecoins, and account abstraction give an autonomous actor a working address, a working balance, and programmable spending limits today. Standards for agent identity and machine-native payments are catching up. ERC-8004 defines onchain registries for agent identity, reputation, and validation, with first deployments arriving in 2026. x402 uses the HTTP 402 status code to let clients, including agents, pay APIs and digital services in stablecoins without traditional accounts. Adoption is early but moving.
 
-The important point is simpler than any one standard. Autonomous economic actors need durable identity, native payments, verifiable state, and rules that do not depend on one host. Ethereum already provides the base environment where those pieces can compose.
-
----
+Agents are where Ethereum's properties stop being abstract and become operational. For builders working on agent infrastructure, the base layer already provides what an autonomous actor needs, and the standards on top are arriving now.
 
 Decentralization, censorship resistance, permissionless deployment, and composability are not separate selling points. They reinforce each other. Decentralization makes censorship resistance credible. Censorship resistance makes permissionless access meaningful. Permissionless access makes composability possible. Composability turns individual apps into shared infrastructure.
 
 Ethereum is not the best substrate for every workload. If your app only needs a fast private database, use one. If your product's value depends on neutral access, shared state, open integration, and commitments that can survive any single party, Ethereum is the platform built for that.
-
----
 
 ## Further Reading
 
