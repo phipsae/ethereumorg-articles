@@ -6,7 +6,7 @@ Most software promises depend on an operator. A cloud provider keeps the server 
 
 Ethereum is built for that second category. No one owns it. The chain runs across many countries, many operators, and multiple independent client implementations. Its rules can change through public protocol upgrades, but no single company, validator, sequencer, or foundation can quietly rewrite them on its own.
 
-For a builder, that means Ethereum is not just a place to host code. It is a place to make public commitments: users can keep reaching what you deploy, other developers can build on it without asking you, and your app can continue to work even when any one party, including you, stops cooperating.
+For a builder, that means Ethereum is not just a place to host code. It is a place to make public commitments. Users can keep reaching what you deploy, other developers can build on it without asking you, and your app can continue to work even when any one party, including you, stops cooperating.
 
 ---
 
@@ -14,11 +14,11 @@ For a builder, that means Ethereum is not just a place to host code. It is a pla
 
 The first reason to build on Ethereum is that the system is not operated by one party. If your app settles assets, records ownership, coordinates markets, or becomes infrastructure for other apps, you do not want the base layer to depend on a company account, a single data center, or one implementation being correct forever.
 
-Ethereum's decentralization shows up in several layers. Around 13,700 to 14,000 nodes were tracked in Etherscan's node tracker in April 2026, distributed across the United States, Germany, China, the United Kingdom, Russia, Japan, and dozens of other countries.
+Ethereum's decentralization shows up across several dimensions, including who runs nodes, where those nodes are located, which client software they run, and how much economic stake secures consensus. Around 13,700 to 14,000 nodes were tracked in Etherscan's node tracker in April 2026, distributed across the United States, Germany, China, the United Kingdom, Russia, Japan, and dozens of other countries.
 
-Every Ethereum node runs two pieces of software side by side. An execution client runs the EVM and tracks contract state. A consensus client handles proof-of-stake: which validators propose blocks, which blocks the network accepts, and when a block becomes final. Healthy decentralization needs multiple independent implementations of each, so a bug in one client does not automatically become a bug in Ethereum.
+Every Ethereum node runs two pieces of software side by side. An execution client runs the EVM and tracks contract state. A consensus client handles proof-of-stake. It tracks which validators propose blocks, which blocks the network accepts, and when a block becomes final. Healthy decentralization needs multiple independent implementations of each, so a bug in one client does not automatically become a bug in Ethereum.
 
-The execution layer has five major clients in production: Geth at roughly 50%, Nethermind around 25%, Besu around 9%, Reth around 8%, and Erigon around 7%. The consensus layer runs on Lighthouse, Prysm, Teku, Nimbus, Lodestar, and other clients. Different data sources rank the top consensus clients differently, but the important fact is that Ethereum is not a single-client chain.
+The execution layer has five major clients in production. Geth runs at roughly 50%, Nethermind around 25%, Besu around 9%, Reth around 8%, and Erigon around 7%. The consensus layer runs on Lighthouse, Prysm, Teku, Nimbus, Lodestar, and other clients. Different data sources rank the top consensus clients differently, but the important fact is that Ethereum is not a single-client chain.
 
 Geth sitting near 50% is the honest fragility worth naming. A bug in a minority client is painful for its operators, but the rest of the network can continue. A severe bug in a client with majority share is more dangerous. That is why client diversity is treated as a live operational priority, not a marketing point.
 
@@ -26,7 +26,7 @@ The other layer is economic. About 32 to 36 million ETH, around 27 to 29% of sup
 
 Ethereum has never had a full chain halt since genesis on July 30, 2015. The closest mainnet has come to a major incident was on May 11 to 12, 2023, when the consensus layer, called the Beacon Chain, failed to finalize for about 25 minutes and then later for about 64 minutes. The cause was a Prysm client bug. Finality requires more than two-thirds of validators to attest, and Prysm's share at the time was high enough that its issue briefly pulled the network below that threshold.
 
-A finality stall is not the same as a chain halt. New blocks kept being produced, transactions kept being included, and most users and applications kept working. What stalled was Ethereum's strongest settlement guarantee: that a block older than roughly 13 minutes cannot be reverted under normal consensus assumptions. Bridges, exchanges, and other systems that wait for finality before crediting deposits would have paused those flows. The chain itself recovered automatically once enough validators caught up, without manual intervention.
+A finality stall is not the same as a chain halt. New blocks kept being produced, transactions kept being included, and most users and applications kept working. What stalled was Ethereum's strongest settlement guarantee. Under normal consensus assumptions, a block older than roughly 13 minutes cannot be reverted. Bridges, exchanges, and other systems that wait for finality before crediting deposits would have paused those flows. The chain itself recovered automatically once enough validators caught up, without manual intervention.
 
 For builders, that history matters because reliability is not an abstract virtue. If other people are going to hold assets in your contracts, route orders through your market, or build on your primitive, they need the foundation underneath it to keep running through bugs, client failures, and institutional pressure.
 
@@ -34,17 +34,15 @@ For builders, that history matters because reliability is not an abstract virtue
 
 ## Censorship resistance
 
-Decentralization is the structure. Censorship resistance is one of the practical things it buys: users should not need permission from a company, government, relay, validator, RPC provider, or app operator to send a valid transaction to your contracts.
+Decentralization is the structure. Censorship resistance is one of the practical things it buys. Users should not need permission from a company, government, relay, validator, RPC provider, or app operator to send a valid transaction to your contracts.
 
-That does not mean every transaction is guaranteed instant inclusion. It means there is no durable single-party veto over valid transactions. Block production is shared across independent validators, builders, and relays. A randomly selected validator proposes each block, while specialized builders often assemble the most profitable block and relays pass those blocks back to proposers. To keep a valid transaction offchain over time, censorship has to persist across that changing set of actors.
+That does not mean every transaction lands in the next block. It means no single party can keep a valid transaction off the chain forever. Block production rotates across many independent validators, builders, and relays. If one of them filters your transaction, the next slot has a different set of actors, and eventually one of them includes it. Censorship has to persist across that whole rotating cast, which is much harder than one operator saying no. The post-Tornado Cash period showed what that looks like under pressure.
 
-The post-Tornado Cash period was a real test. Tornado Cash is a privacy mixer contract that breaks the onchain link between deposit and withdrawal. On August 8, 2022, the US Treasury's sanctions office, OFAC, added it to the sanctions list. Several major MEV-Boost relays responded by refusing to forward blocks that included transactions from sanctioned addresses. The share of blocks passing through those "OFAC-compliant" relays climbed quickly and peaked near 79% in November 2022.
+Tornado Cash is a privacy mixer contract that breaks the onchain link between deposit and withdrawal. On August 8, 2022, the US Treasury's sanctions office, OFAC, added it to the sanctions list. Several major MEV-Boost relays responded by refusing to forward blocks that included transactions from sanctioned addresses. The share of blocks passing through those "OFAC-compliant" relays climbed quickly and peaked near 79% in November 2022. The remaining 21% of blocks were built by relays and builders that did not filter, so Tornado Cash transactions could still land. Filtering made those transactions slower, not impossible. With only about one in five blocks available, the expected wait rose from about 12 seconds to about a minute.
 
-That looked alarming, and it was. Then the number fell. By early 2023 it was below 50%, and from 2023 through 2025 it generally ranged between roughly 27% and 47% depending on the week. As of April 2026, four of seven major relays were OFAC-compliant, while others, including Ultra Sound and Agnostic, did not filter. The censorship pressure was real, but it did not become a permanent network-wide veto.
+That looked alarming, and it was. Then the number fell. By early 2023 it was below 50%, and through 2023 it generally ranged between roughly 27% and 47% depending on the week. New relays launched explicitly without filters, including Ultra Sound and Agnostic, and proposers were free to add them to their MEV-Boost setup. No one could force every proposer onto a filtering relay, so the share could not stay where it peaked. OFAC removed Tornado Cash from the sanctions list on March 21, 2025, but the episode remains Ethereum's clearest censorship-resistance stress test.
 
-Ethereum is also moving more of this guarantee into the protocol itself. FOCIL (EIP-7805) has been selected as the consensus-layer headliner for Hegota, the upgrade planned after Glamsterdam. FOCIL adds inclusion lists: randomly selected validators publish transactions they see in the public mempool, and the next block is expected to satisfy those lists. If a block ignores satisfiable inclusion-list transactions, attesters can withhold support from that block through fork choice.
-
-For builders, the point is not that censorship disappears. The point is that Ethereum makes censorship expensive, visible, and contested by default. If your app serves users who may be unpopular, regulated, geographically dispersed, or simply outside a platform's business interests, that difference matters.
+Ethereum is also moving more of this guarantee into the protocol itself. A planned upgrade called FOCIL (EIP-7805) adds inclusion lists. Randomly selected validators publish transactions they see in the public mempool, and the next block is expected to satisfy those lists. If a block ignores them, the rest of the network can reject it. So no one can stop your users from using your app.
 
 ---
 
@@ -64,7 +62,7 @@ That is why Ethereum apps can become public infrastructure instead of private in
 
 ## Composability
 
-Permissionlessness lets you ship. Composability is what makes shipping on Ethereum different from shipping on a closed platform: contracts are public building blocks, and every new contract can read from or call the contracts already deployed.
+Permissionlessness lets you ship. Composability is what makes shipping on Ethereum different from shipping on a closed platform. Contracts are public building blocks, and every new contract can read from or call the contracts already deployed.
 
 WETH is the cleanest example. The contract sits at one fixed mainnet address, held about 1.8 million WETH in April 2026, had roughly 3.25 million holders, and acts as a common unit across DEXs, lending markets, vaults, and bridges. It is not an integration partner. It is code that thousands of other contracts and apps can use directly.
 
@@ -72,7 +70,7 @@ That pattern repeats across the ecosystem. From genesis to early 2025, Ethereum 
 
 The builder consequence is the difference between shipping a feature and shipping a primitive. A feature serves your own app. A primitive becomes something other people can compose with, route through, fork, extend, and make more useful than you could have planned. That compounding effect is why liquidity, standards, and developer attention matter so much.
 
-As of April 2026, roughly $55 to 57 billion sat in DeFi on Ethereum L1 alone, with more value secured by Ethereum through L2s. That is not just capital. It is live infrastructure: assets, markets, oracles, wallets, account systems, governance contracts, bridges, analytics, and developer tools that a new builder can plug into on day one.
+As of April 2026, roughly $55 to 57 billion sat in DeFi on Ethereum L1 alone, with more value secured by Ethereum through L2s. That is not just capital. It is live infrastructure, including assets, markets, oracles, wallets, account systems, governance contracts, bridges, analytics, and developer tools that a new builder can plug into on day one.
 
 ---
 
