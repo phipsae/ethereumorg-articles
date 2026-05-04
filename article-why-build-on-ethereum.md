@@ -8,9 +8,7 @@ Ethereum is built for the second case, where neutral access and verifiable commi
 
 ## Decentralization
 
-If your app settles assets, records ownership, coordinates markets, or becomes infrastructure for other apps, you do not want the base layer to depend on a company account, a single data center, or one implementation being correct forever.
-
-Ethereum runs on a network of computers, called nodes, that each store a copy of the chain and check every transaction. Each node runs client software. A subset of nodes, called validators, take turns proposing and confirming new blocks through a process called consensus. To participate, validators put up ETH as collateral, called stake, that they lose if they break the rules. Around 13,700 to 14,000 nodes were tracked in Etherscan's node tracker in April 2026, distributed across the United States, Germany, China, the United Kingdom, Russia, Japan, and dozens of other countries.
+Decentralization is the foundation those properties stand on. Ethereum delivers it through a network of computers, called nodes, that each store a copy of the chain and check every transaction. Each node runs client software. A subset of nodes, called validators, take turns proposing and confirming new blocks through a process called consensus. To participate, validators put up ETH as collateral, called stake, that they lose if they break the rules. Around 13,700 to 14,000 nodes were tracked in Etherscan's node tracker in April 2026, distributed across the United States, Germany, China, the United Kingdom, Russia, Japan, and dozens of other countries.
 
 Decentralization is also economic. About 32 to 36 million ETH, around 27 to 29% of supply, is staked as collateral that the protocol slashes when validators provably misbehave. An attacker would need to acquire and risk a meaningful fraction of that stake to corrupt the chain. At April 2026 ETH prices, that means tens of billions of dollars would be at risk.
 
@@ -62,7 +60,7 @@ As of May 2026, around $46 billion sat in DeFi on Ethereum. That money is locked
 
 ## The agent economy
 
-All of those properties matter for the next wave of users entering Ethereum. AI agents are that wave, and as more of them come on-chain, they grow the user base for every builder on the same substrate. They pay for services, hold capital, and settle with other agents through transactions and contract calls, all without a human in the loop. An autonomous agent has no card to charge, no platform account to suspend, and no human to call when a relay refuses to forward a transaction. Permissionless access and censorship resistance go from convenient to non-negotiable for that kind of software, and Ethereum's properties are a direct match for what they need.
+Permissionless access and censorship resistance, with decentralization underneath them, matter even more for the next wave of users entering Ethereum. AI agents are that wave, and they pay for services, hold capital, and settle with other agents through transactions and contract calls, all without a human in the loop. An agent has no card to charge, no platform account to suspend, and no human to call when a relay refuses to forward a transaction. That is why both stop being optional for that kind of software, and Ethereum's properties are a direct match for what an agent actually needs. Ethereum is where that economy is expected to play out, and that could grow the user base immensely.
 
 Whether you ship the agent or ship the contracts the agent calls, the same problems show up. On a typical hosted stack, the agent's identity is rented from a platform account that can be revoked. Its payments depend on a human's card or API key. Its rules run on a server an operator controls. Its continuity depends on a host that can disappear. Every one of those dependencies is what Ethereum's base layer is designed to remove.
 
