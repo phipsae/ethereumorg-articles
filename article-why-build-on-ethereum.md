@@ -91,4 +91,4 @@ Decentralization, censorship resistance, permissionless deployment, and composab
 - [WETH on Etherscan](https://etherscan.io/token/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2)
 - [Zellic: All Ethereum contracts](https://www.zellic.io/blog/all-ethereum-contracts/)
 - [DefiLlama: Ethereum chain](https://defillama.com/chain/ethereum)
-- [OpenZeppelin: Technical Risk Assessment on Blockchain Networks (April 2026)](TODO-add-published-url)
+- [OpenZeppelin: Technical Risk Assessment on Blockchain Networks (April 2026)](https://openzeppelin.com/hubfs/OpenZeppelin%20%7C%20Technical%20Risk%20Assessment%20on%20Blockchain%20Networks.pdf)
