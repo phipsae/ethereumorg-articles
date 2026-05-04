@@ -28,7 +28,7 @@ For builders, that history matters. If other people are going to hold assets in 
 
 Decentralization is the structure. Censorship resistance is one of the practical things it buys. Users should not need permission from a company, government, relay, validator, RPC provider, or app operator to send a valid transaction to your contracts.
 
-That does not mean every transaction lands in the next block. It means no single party can keep a valid transaction off the chain forever. Block production rotates across many independent validators, builders, and relays. If one of them filters your transaction, the next slot has a different set of actors, and eventually one of them includes it. Censorship has to persist across that whole rotating cast, which is much harder than one operator saying no. The post-Tornado Cash period showed what that looks like under pressure.
+That does not mean every transaction lands in the next block. It means no single party can keep a valid transaction off the chain forever. Each block is proposed by a different validator, who works with outside parties, called builders and relays, to assemble it. If one of them filters your transaction, the next slot has a different set, and eventually one of them includes it. Censorship has to persist across that whole rotating cast, which is much harder than one operator saying no. The post-Tornado Cash period showed what that looks like under pressure.
 
 Tornado Cash is a privacy mixer contract that breaks the onchain link between deposit and withdrawal. After OFAC sanctioned it in August 2022, several major MEV-Boost relays refused to forward blocks containing transactions from sanctioned addresses. The share of blocks built through those OFAC-compliant relays peaked near 79% in November 2022. The other 21% came from relays and builders that did not filter, so Tornado Cash transactions still landed, just slower. The expected wait rose from about 12 seconds to about a minute.
 
@@ -91,3 +91,4 @@ Decentralization, censorship resistance, permissionless deployment, and composab
 - [WETH on Etherscan](https://etherscan.io/token/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2)
 - [Zellic: All Ethereum contracts](https://www.zellic.io/blog/all-ethereum-contracts/)
 - [DefiLlama: Ethereum chain](https://defillama.com/chain/ethereum)
+- [OpenZeppelin: Technical Risk Assessment on Blockchain Networks (April 2026)](TODO-add-published-url)
