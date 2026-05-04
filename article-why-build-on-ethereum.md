@@ -46,15 +46,15 @@ Deploying on Ethereum does not require a partnership, account, listing approval,
 
 That changes the builder model. On a platform, the platform owner can change terms, revoke keys, block regions, remove apps, or make access conditional on a business relationship. On Ethereum, the protocol evaluates transactions by the same public rules for any caller. A contract deployed today runs by those public rules for every address as long as the chain keeps running.
 
-This does not remove every dependency. Most users don't reach your contracts directly. They go through a frontend, a wallet, and an RPC provider, and any of those layers can break or filter. Frontends can be taken down. RPC providers, the services that route most app and wallet requests to the chain, can refuse to forward transactions or block specific regions and addresses. Wallets can choose what they display.
+This does not remove every dependency. Most users do not reach your contracts directly. They go through a frontend, a wallet, and an RPC provider, and any of those layers can break or filter. Frontends can be taken down. RPC providers, the services that route most app and wallet requests to the chain, can refuse to forward transactions or block specific regions and addresses. Wallets can choose what they display.
 
 The base execution environment stays open underneath. If your frontend goes down, a user can still call the contract directly, and another developer can build a new interface. If a wallet stops supporting your token, the contract still works. If one RPC provider filters, an app can route through another or run its own node to reach the network.
 
 ## Composability
 
-Permissionlessness gets your code onto the chain. Once it's there, no one can take it down, so other developers can build on top of your contracts, and you can build on theirs.
+Permissionlessness gets your code onto the chain. Once it is there, no one can take it down, so other developers can build on top of your contracts, and you can build on theirs.
 
-WETH is the cleanest example. It's a contract that wraps ETH so it can be used like a standard token in other contracts. It sits at one fixed mainnet address, holds about 1.8 million WETH as of May 2026, has roughly 3.25 million holders, and acts as a common unit across DEXs, lending markets, vaults, and bridges. It is code that thousands of other contracts and apps can use directly.
+WETH is the cleanest example. It is a contract that wraps ETH so it can be used like a standard token in other contracts. It sits at one fixed mainnet address, holds about 1.8 million WETH as of May 2026, has roughly 3.25 million holders, and acts as a common unit across DEXs, lending markets, vaults, and bridges. It is code that thousands of other contracts and apps can use directly.
 
 That pattern repeats across the ecosystem. From genesis to early 2025, Ethereum saw tens of millions of contract deployments and roughly 2.5 million unique bytecodes by Zellic's count. Standards like ERC-20 for fungible tokens and ERC-721 for non-fungible tokens (NFTs) became coordination layers. A token your contract emits can be traded on a DEX, borrowed against in a money market, indexed by analytics tools, displayed in wallets, and bridged or wrapped by other systems without each team negotiating a custom agreement.
 
@@ -74,7 +74,7 @@ For any builder picking a chain to ship on, agents are the next user class formi
 
 ## Conclusion
 
-Decentralization, censorship resistance, permissionless deployment, and composability are not separate selling points. They reinforce each other. Decentralization makes censorship resistance credible and lets users keep reaching what's shipped. Permissionless deployment lets builders ship. Composability turns those apps into shared infrastructure. Autonomous agents can transact through it and no one can stop them. What you ship is a public commitment. It keeps running without you.
+Decentralization, censorship resistance, permissionless deployment, and composability are not separate selling points. They reinforce each other. Decentralization makes censorship resistance credible and lets users keep reaching what is shipped. Permissionless deployment lets builders ship. Composability turns those apps into shared infrastructure. Autonomous agents can transact through it and no one can stop them. What you ship is a public commitment. It keeps running without you.
 
 ## Further Reading
 
@@ -85,7 +85,7 @@ Decentralization, censorship resistance, permissionless deployment, and composab
 - [Post-mortem: May 2023 mainnet finality](https://medium.com/offchainlabs/post-mortem-report-ethereum-mainnet-finality-05-11-2023-95e271dfd8b2)
 - [mevwatch.info](https://www.mevwatch.info/)
 - [The Block: OFAC-compliant blocks fall to 27%](https://www.theblock.co/post/230179/ethereums-ofac-compliant-blocks-fall-to-27-marking-a-drop-in-protocol-level-censorship)
-- [Hegota Headliner Proposal: FOCIL (EIP-7805)](https://ethereum-magicians.org/t/hegota-headliner-proposal-focil-eip-7805/27604)
+- [Hegotá Headliner Proposal: FOCIL (EIP-7805)](https://ethereum-magicians.org/t/hegota-headliner-proposal-focil-eip-7805/27604)
 - [EIP-7805: Fork-choice enforced Inclusion Lists (FOCIL)](https://eips.ethereum.org/EIPS/eip-7805)
 - [EIP-8004: Onchain Agent Identity](https://eips.ethereum.org/EIPS/eip-8004)
 - [coinbase/x402 GitHub](https://github.com/coinbase/x402)
