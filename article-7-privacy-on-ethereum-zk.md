@@ -2,21 +2,21 @@
 
 Ethereum is radically public by design. Every address, balance, transaction, contract call, and event is visible to anyone with a block explorer. That transparency is useful when you want verifiability. It is a problem when users need to vote, claim, withdraw, or prove membership without linking every action back to the same wallet.
 
-One reusable pattern powers a large class of privacy apps on Ethereum: anonymous membership. People register first, then later prove they belong to the group without revealing which member they are. A zero-knowledge proof is the bridge between the registration wallet and the acting wallet, and the bridge does not reveal who crossed it.
+Anonymous membership is the reusable pattern that powers a large class of privacy apps on Ethereum. People register first, then later prove they belong to the group without revealing which member they are. A zero-knowledge proof is the bridge between the registration wallet and the acting wallet, and the bridge does not reveal who crossed it.
 
 The surrounding product changes, but the privacy skeleton stays the same.
 
 ## The pattern, explained through anonymous voting
 
-In code, the pattern has three pieces. A commitment registers each member. A Merkle tree turns those commitments into a crowd. A proof and a nullifier let one member act once without revealing which member acted.
+The pattern has three pieces. A commitment registers each member. A Merkle tree turns those commitments into a crowd. A proof and a nullifier let one member act once without revealing which member acted.
 
 ### Step one. Registering
 
-Every voter creates private values and keeps them offchain. In a simple version, call them the secret and the nullifier. The voter hashes those values into a public commitment, then registers that commitment onchain.
+Every voter creates two private values offchain, the secret and the nullifier. The voter hashes those values into a public commitment, then registers that commitment onchain.
 
-The commitment is the public registration record. The secret and nullifier are the private note the voter needs later. Lose the note and the voter cannot prove membership. Leak it and someone else may be able to use the vote or claim first.
+The commitment is the public registration record. The secret and nullifier are the private note the voter needs later. Lose the note and the voter cannot prove membership. Leak it and someone else may be able to vote in the user's place.
 
-Because the commitment is a hash, observers should not be able to recover the private values inside it. The commitment says "someone registered" without revealing who will later use that registration.
+Because the commitment is a hash, observers cannot recover the private values inside it. The commitment says "someone registered" without revealing who will later use that registration.
 
 ### Step two. Building the crowd
 
@@ -26,7 +26,7 @@ That tree is your anonymity set. If ten users are in the tree, an observer can n
 
 ### Step three. Acting anonymously
 
-When the poll opens, the voter should not vote from the same wallet that registered the commitment. Voting from the registration wallet would link the vote straight back to the registrant and undo the privacy work. Instead, the voter creates a zero-knowledge proof. The statement is encoded as a circuit: "I know private values that produce a registered commitment, and I am revealing the correct nullifier hash for this poll."
+When the poll opens, the voter should not vote from the same wallet that registered the commitment. Voting from the registration wallet would link the vote straight back to the registrant and undo the privacy work. Instead, the voter creates a zero-knowledge proof. The statement is encoded as a circuit that says, "I know private values that produce a registered commitment, and I am revealing the correct nullifier hash for this poll."
 
 The proof convinces the verifier contract that the statement is true. It does not reveal the secret, the nullifier, or which commitment was used.
 
@@ -52,9 +52,9 @@ The sensitive UX is note handling. Treat the secret and nullifier like keys. Do 
 
 You do not need to hand-code the underlying cryptography. A common path is to write the circuit in a high-level zero-knowledge language, generate a Solidity verifier, and call that verifier from the app contract.
 
-The right stack depends on the job. Circom with snarkjs is a long-running path for app-level circuits. Noir with Barretenberg is a newer developer-friendly path. Halo2 and gnark are lower-level circuit libraries. zkVMs such as RISC Zero or SP1 prove normal programs, but can be heavier than a small custom circuit.
+The right stack depends on the job. Circom with snarkjs is a long-established path for app-level circuits. Noir with Barretenberg is a newer developer-friendly path. Halo2 and gnark are lower-level circuit libraries. zkVMs such as RISC Zero or SP1 prove normal programs, but can be more expensive to prove than a small custom circuit.
 
-For anonymous membership, reach for an existing protocol before writing your own circuit. Semaphore packages group membership and nullifier-based double-use prevention into contracts and JavaScript libraries. For private voting and governance, MACI is the specialized path because it adds anti-collusion properties. Mature primitives are often safer than new circuits.
+For anonymous membership, reach for an existing protocol before writing your own circuit. Semaphore packages group membership and nullifier-based double-use prevention into contracts and JavaScript libraries. For private voting and governance, MACI is the specialized path because it adds anti-collusion properties. Mature protocols are often safer than new circuits.
 
 ## The proof is not enough
 
@@ -62,15 +62,15 @@ Even a perfect proof fails if the wallet flow leaks the link. Register from wall
 
 This is why bundlers and paymasters matter. The acting wallet should be fresh, and it should not need to receive ETH from a wallet the user is trying to separate from the action.
 
-The same problem exists offchain. Submitting registration and action transactions from the same IP address, RPC provider, or session can weaken the privacy the circuit gives you. Frontends can leak through analytics, local storage, and support logs. A zero-knowledge proof hides the values inside the proof. It does not hide everything around the transaction.
+The same problem exists offchain. Submitting registration and action transactions from the same IP address, RPC provider, or session can weaken the privacy the circuit provides. Frontends can leak through analytics, local storage, and support logs. A zero-knowledge proof hides the values inside the proof. It does not hide everything around the transaction.
 
-Public inputs are another place privacy apps fail. Anything marked public in the circuit, emitted as an event, included in calldata, or stored by the contract is visible. Review public inputs as carefully as you review who can call which functions in a Solidity contract.
+Public inputs are another place privacy apps fail. Anything marked public in the circuit, emitted as an event, included in calldata, or stored by the contract is visible. Review public inputs as carefully as access control on a Solidity contract.
 
 ## What this changes for builders
 
-Privacy on Ethereum is no longer only a research story. Builders can compose the pieces into real applications: a circuit for the private statement, a verifier for proof checking, an app contract for public rules, an indexer for Merkle data, and a bundler plus paymaster for unlinkable submission and gas sponsorship.
+Privacy on Ethereum is shippable. Builders can compose the pieces into real applications. The stack is a circuit for the private statement, a verifier for proof checking, an app contract for public rules, an indexer for Merkle data, and a bundler plus paymaster for unlinkable submission and gas sponsorship.
 
-The hard parts are product design, key management, metadata hygiene, audits, compliance, and growing the anonymity set. Get any of them wrong and the privacy the proof gave is gone.
+The hard parts are product design, key management, metadata hygiene, audits, and growing the anonymity set. Get any of them wrong and the privacy the proof gave is gone.
 
 ## Further reading
 
