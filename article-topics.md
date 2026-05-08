@@ -9,7 +9,22 @@ Articles live on ethereum.org, the highest-authority Ethereum domain. Each artic
 
 ---
 
-## Article 1: Building on Ethereum in 2026: What's Changed
+## AI Agents and Ethereum
+
+Where Ethereum is heading. The frontier.
+
+**Key points:**
+- ERC-8004: onchain agent identity registry, deployed January 2026 on 20+ chains
+- x402: HTTP 402 payment protocol for machine-to-machine commerce
+- EIP-3009: gasless token transfers (what makes x402 work, USDC implements it)
+- Blockscout MCP server: structured blockchain data for AI agents
+- Smart contracts cannot execute themselves. Every function needs a caller. Design with incentives
+
+**Audience:** Builders exploring AI + crypto intersection. Growing fast.
+
+---
+
+## Building on Ethereum in 2026, What's Changed
 
 The flagship article. Resets the most common outdated assumptions.
 
@@ -20,12 +35,13 @@ The flagship article. Resets the most common outdated assumptions.
 - Fusaka (Dec 2025): PeerDAS, 60M default gas limit, P-256 precompile, tx gas cap
 - Glamsterdam (targeted 2026): ePBS and Block-level Access Lists, but timeline is still moving
 - The new account model: EOAs can delegate to contract code via EIP-7702; explain persistence and reset correctly
+- Keep this piece on current builder mental models, deferring speculative roadmap detail to a closing section
 
 **Audience:** All builders. This is the entry point.
 
 ---
 
-## Article 2: Choosing Where to Deploy: Mainnet vs L2s
+## Choosing Where to Deploy, Mainnet vs L2s
 
 Concrete comparison with costs, liquidity, and use cases.
 
@@ -42,23 +58,37 @@ Concrete comparison with costs, liquidity, and use cases.
 
 ---
 
-## Article 3: Smart Accounts and EIP-7702
+## dApp Frontend UX Patterns
 
-What the new account model means for builders.
+Almost nothing good exists on this topic. High value.
 
 **Key points:**
-- EIP-7702 has been live since Pectra (May 2025)
-- EOAs can set delegation code without migrating addresses
-- Delegation can be changed or reset; the EOA key still retains ultimate control
-- Changes how you think about wallets, UX, and onboarding
-- Safe secures $60B+ in assets. Use for production treasuries
-- Account abstraction landscape: ERC-4337 vs EIP-7702 vs native AA
+- Every onchain button needs its own loader + disabled state. No shared isLoading
+- Three-button flow: Switch Network -> Approve -> Execute. One at a time
+- Show USD values next to every token amount
+- Every address display uses proper components with ENS resolution
+- Scaffold-ETH 2 hooks vs raw wagmi (raw wagmi resolves before tx confirmation)
 
-**Audience:** All builders. New builders learn the right mental model from day one.
+**Audience:** Frontend developers building dApps. Fills a massive gap.
 
 ---
 
-## Article 4: Security Patterns Every Solidity Developer Needs
+## Privacy on Ethereum with Zero-Knowledge Proofs
+
+Making ZK privacy accessible.
+
+**Key points:**
+- The commitment-nullifier-Merkle tree pattern: foundation of all Ethereum privacy apps
+- Noir: privacy-first ZK language. Inputs are private by default
+- In-circuit hashing: Poseidon (~600 gates) not SHA256 (~30,000 gates)
+- Practical privacy app architecture on Ethereum
+- bb (Barretenberg) CLI for proving/verifying
+
+**Audience:** Builders interested in privacy. Niche but important for ethereum.org to cover.
+
+---
+
+## Security Patterns Every Solidity Developer Needs
 
 Real money-losing mistakes and how to avoid them.
 
@@ -74,48 +104,19 @@ Real money-losing mistakes and how to avoid them.
 
 ---
 
-## Article 5: dApp Frontend UX Patterns
+## Smart Accounts and EIP-7702
 
-Almost nothing good exists on this topic. High value.
-
-**Key points:**
-- Every onchain button needs its own loader + disabled state. No shared isLoading
-- Three-button flow: Switch Network -> Approve -> Execute. One at a time
-- Show USD values next to every token amount
-- Every address display uses proper components with ENS resolution
-- Scaffold-ETH 2 hooks vs raw wagmi (raw wagmi resolves before tx confirmation)
-
-**Audience:** Frontend developers building dApps. Fills a massive gap.
-
----
-
-## Article 6: AI Agents and Ethereum
-
-Where Ethereum is heading. The frontier.
+What the new account model means for builders.
 
 **Key points:**
-- ERC-8004: onchain agent identity registry, deployed January 2026 on 20+ chains
-- x402: HTTP 402 payment protocol for machine-to-machine commerce
-- EIP-3009: gasless token transfers (what makes x402 work, USDC implements it)
-- Blockscout MCP server: structured blockchain data for AI agents
-- Smart contracts cannot execute themselves. Every function needs a caller. Design with incentives
+- EIP-7702 has been live since Pectra (May 2025)
+- EOAs can set delegation code without migrating addresses
+- Delegation can be changed or reset; the EOA key still retains ultimate control
+- Changes how you think about wallets, UX, and onboarding
+- Safe secures $60B+ in assets. Use for production treasuries
+- Account abstraction landscape: ERC-4337 vs EIP-7702 vs native AA
 
-**Audience:** Builders exploring AI + crypto intersection. Growing fast.
-
----
-
-## Article 7: Privacy on Ethereum with Zero-Knowledge Proofs
-
-Making ZK privacy accessible.
-
-**Key points:**
-- The commitment-nullifier-Merkle tree pattern: foundation of all Ethereum privacy apps
-- Noir: privacy-first ZK language. Inputs are private by default
-- In-circuit hashing: Poseidon (~600 gates) not SHA256 (~30,000 gates)
-- Practical privacy app architecture on Ethereum
-- bb (Barretenberg) CLI for proving/verifying
-
-**Audience:** Builders interested in privacy. Niche but important for ethereum.org to cover.
+**Audience:** All builders. New builders learn the right mental model from day one.
 
 ---
 
@@ -124,6 +125,5 @@ Making ZK privacy accessible.
 - Each article should correct common misconceptions in normal prose; only use a dedicated misconceptions section when it improves the reader experience
 - Date-stamp volatile claims such as gas, USD costs, ETH price, and roadmap targets
 - Put assumptions next to any cost table (gas price, ETH price, representative gas usage)
-- Keep Article 1 focused on current builder mental models; move speculative roadmap detail to a short closing section or later articles
 - Articles should state "onchain" not "on-chain" (Ethereum community convention)
 - Sources should prioritize official Ethereum posts, EIPs, and live onchain or explorer data
