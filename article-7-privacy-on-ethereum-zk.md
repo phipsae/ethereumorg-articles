@@ -1,68 +1,98 @@
-# Privacy on Ethereum with Zero-Knowledge Proofs
+# How to build privacy apps on Ethereum with zero-knowledge proofs
 
-Ethereum is radically public by design. Every address, every balance, every transaction is visible to anyone with a block explorer. Yet you can vote without revealing who voted, withdraw without revealing who deposited, and claim airdrops or join DAOs without being linked back to a wallet.
+Ethereum is radically public by design. Every address, balance, transaction, contract call, and event is visible to anyone with a block explorer. That transparency is useful when you want verifiability. It is a problem when users need to vote, claim, withdraw, or prove membership without linking every action back to the same wallet.
 
-One reusable pattern powers a large class of privacy apps on Ethereum mainnet, the anonymous-membership pattern. People register first, then later prove they belong to the group without revealing which member they are. At its core, the pattern breaks the onchain link between the wallet you register with and the wallet you act from. A zero-knowledge proof is the bridge between them, and it does not leak who you are. Master the pattern once and you can build voting, mixers, anonymous airdrops, and anonymous membership systems.
+One reusable pattern powers a large class of privacy apps on Ethereum: anonymous membership. People register first, then later prove they belong to the group without revealing which member they are. A zero-knowledge proof is the bridge between the registration wallet and the acting wallet, and the bridge does not reveal who crossed it.
+
+The surrounding product changes, but the privacy skeleton stays the same.
 
 ## The pattern, explained through anonymous voting
 
-In code, the pattern is three steps. A commitment registers each member. A Merkle tree binds the commitments into a crowd. A proof and a nullifier let any member vote once without revealing which one.
+In code, the pattern has three pieces. A commitment registers each member. A Merkle tree turns those commitments into a crowd. A proof and a nullifier let one member act once without revealing which member acted.
 
 ### Step one. Registering
 
-Every voter picks two random numbers and keeps them private. Call them the secret and the nullifier. The voter hashes them together into a single value called a commitment, then publishes the commitment onchain and keeps the two original numbers stored securely on their computer. You can think of the commitment as the registration record that later lets you cast one anonymous vote from a different address. Because the commitment is a hash, it reveals nothing about the secret or the nullifier inside it.
+Every voter creates private values and keeps them offchain. In a simple version, call them the secret and the nullifier. The voter hashes those values into a public commitment, then registers that commitment onchain.
+
+The commitment is the public registration record. The secret and nullifier are the private note the voter needs later. Lose the note and the voter cannot prove membership. Leak it and someone else may be able to use the vote or claim first.
+
+Because the commitment is a hash, observers should not be able to recover the private values inside it. The commitment says "someone registered" without revealing who will later use that registration.
 
 ### Step two. Building the crowd
 
-As more voters register, all of their commitments are collected into a shared Merkle tree. A Merkle tree is a way of summarizing many commitments into one master hash called the root. You hash the commitments in pairs, then hash those results in pairs, and keep going until everything has been collapsed into a single value at the top. The trick of a Merkle tree is that, given the root, you can later prove your commitment was one of the inputs that produced it without revealing which one.
+As more voters register, the app collects their commitments into a Merkle tree. A Merkle tree compresses a long list of values into a single hash, called the root. Change any value in the list and the hash changes, so the root acts as a tamper-evident summary of the whole set.
 
-That tree is your anonymity set. The term sounds technical but the idea is simple. When you later prove you are in the tree, an outside observer can only narrow you down to "someone who is in this tree." They cannot tell which of the registered voters was actually you. Everyone in the tree looks the same from the outside, and that is exactly the privacy you want.
+That tree is your anonymity set. If ten users are in the tree, an observer can narrow a later action down to one of those ten. If ten thousand users are in the tree, the action is much harder to link to one person. A private app with a tiny anonymity set is usually not very private, even if the cryptography is correct.
 
-The strength of that protection scales with the size of the crowd. With three voters in the tree, an observer has a one-in-three shot at guessing which one was you. With ten thousand, guessing is useless. A "private" app with two users is not private. It gives an observer a 50:50 chance of picking the right person.
+In production, this means root management matters. The contract needs to know which roots are valid, and the frontend usually needs an indexer so it can rebuild Merkle paths for users.
 
-### Step three. Voting
+### Step three. Acting anonymously
 
-When the poll opens, you do not log in with your registration address. Instead, you create a zero-knowledge proof, math that lets you prove a statement is true without revealing the values that make it true. The statement is encoded as a small program called a circuit, and in this case the circuit checks that you know the secret and nullifier behind one of the commitments in the Merkle tree.
+When the poll opens, the voter should not vote from the same wallet that registered the commitment. Instead, the voter creates a zero-knowledge proof. The statement is encoded as a circuit: "I know private values that produce a registered commitment, and I am revealing the correct nullifier hash for this poll."
 
-The secret helps prove you are an eligible voter, and the nullifier is what prevents you from voting twice. You submit the proof to the voting contract. That contract relies on a verifier, a smart contract automatically generated from your circuit and deployed onchain, which checks the proof against the rules. The contract becomes convinced you are one of the registered voters, but never learns which one.
+The proof convinces the verifier contract that the statement is true. It does not reveal the secret, the nullifier, or which commitment was used.
 
-Alongside the proof, you publish the hash of your nullifier. Call this the nullifier hash. The contract stores it as a one-shot stamp on your vote. Because it is a hash, nobody can run it backward to recover the nullifier itself or learn anything useful about your private values.
+The nullifier is what prevents double voting. Alongside the proof, the voter publishes a nullifier hash. The voting contract stores that hash after accepting the vote. If the same private note is used again for the same poll, it produces the same nullifier hash, and the contract rejects the second vote.
 
-The contract does two checks. Is the proof valid, and has it seen this nullifier hash before? If the proof passes and the hash is new, it counts your vote and saves the hash. If you try to vote again from the same commitment, your nullifier produces the same hash, the contract sees it has already been used, and it rejects the duplicate. Every commitment is spent exactly once, and the contract never learns which one was yours.
+The contract learns that some registered voter acted once. It does not learn which registered voter it was.
 
-## How a zero-knowledge proof works
+## The reusable gate
 
-The proof is doing most of the heavy lifting. Think of it as a sealed envelope. Inside the envelope are your private values, the secret and the nullifier. Outside the envelope is a tiny mathematical receipt that anyone can check. The receipt effectively says, "Whoever sealed this envelope knew values that satisfy the rules." The verifier checks the receipt, accepts you, and never opens the envelope.
+Now the payoff. Strip away the voting story and what you have is a privacy gate for smart contract functions.
 
-## The wallet catch
+Before the function runs, the contract checks the Merkle root, verifies the proof, confirms the nullifier hash has not been used, and binds the public inputs to the right app, chain, poll, claim, or withdrawal. If those checks pass, it marks the nullifier as used and runs the rest of the function.
 
-Even a perfect proof fails if you are careless about which wallet you use. Register your commitment from wallet A and then vote from wallet A, and anyone watching can link the two transactions directly, undoing everything the proof protected.
+Put that gate in front of a vote and you get anonymous voting. Put it in front of an airdrop claim and you get anonymous claims. Put it in front of a withdrawal function and you get the core of a mixer-style withdrawal flow. Same commitment tree, same nullifier idea, same proof pattern. What changes is the function body and the surrounding app logic.
 
-The fix is simple. Register from one wallet, then act from a fresh burner wallet that has never been used before. Have a relayer (or an ERC-4337 paymaster) pay the burner's gas, so the burner does not need to receive ETH from you first, which would itself create a link. The proof is the only bridge between your two identities, and unlike the wallets themselves, that bridge is cryptographic and unobservable.
+It is not the whole app. It is the privacy layer. A real system still needs a circuit, verifier and app contracts, a prover UI, root tracking, and unlinkable transaction submission.
 
-The same logic applies off-chain. Submitting both transactions from the same IP, the same RPC provider, or back-to-back in time can recreate the link the proof was meant to break. Treat the burner wallet's network identity with the same care as the cryptographic identity.
+## What runs where
 
-## A reusable gate
+The private work usually happens offchain. The user stores the note, the frontend or wallet builds the witness, and the prover creates the proof. An indexer tracks commitments and Merkle roots. A relayer or ERC-4337 paymaster can submit the final transaction so a fresh wallet does not need ETH from the user's known wallet first.
 
-Now the payoff. Strip away the voting story and what you actually have is a reusable gate you can drop in front of certain smart contract functions. Verify the proof, confirm the nullifier hash has not been used yet, mark it as used, then run the rest of the function. That pattern repeats across use cases, but the surrounding engineering still matters. Deploying the verifier, storing the user's secret and nullifier safely, handling Merkle roots, and maintaining an offchain copy of the tree are all part of a real system. Put the check in front of a withdrawal function and you have the core of a mixer-style withdrawal flow. Put it in front of an airdrop claim and you have anonymous airdrops. Put it in front of a vote, a leak submission, or an access gate and you have private DAOs, anonymous whistleblowing, and shielded membership checks. Same commitment tree, same nullifier idea, same proof pattern. What changes is the function body and the surrounding app logic.
+The public enforcement happens onchain. The verifier contract checks the proof. The app contract checks valid roots and unused nullifiers, stores the nullifier hash, and runs the public action.
 
-It is not an app. It is a privacy layer, a gate you drop into any smart contract function that should only be callable by an anonymous member of a registered group.
+The sensitive UX is note handling. Treat the secret and nullifier like keys. Do not put them in analytics, logs, URLs, error reports, or normal server-side telemetry. A privacy app that leaks the note outside the circuit has already lost.
 
 ## The tooling caught up
 
-The tooling has finally caught up. Noir is a Rust-like language for writing the math (the "circuit") that defines what your proof has to prove. Poseidon, the hash function ZK circuits use internally, is roughly fifty times cheaper to run inside a circuit than SHA256, which is what made proving fast enough to do client-side and the resulting proofs cheap enough to verify onchain. As of early May 2026, mainnet gas has often been low enough that verification can cost cents per call when conditions are similar. A privacy MVP today is often one or two contracts, one circuit, and a frontend, small enough to prototype quickly, even if production hardening takes more work.
+You do not need to write pairing math by hand. A common path is to write the circuit in a high-level zero-knowledge language, generate a Solidity verifier, and call that verifier from the app contract.
 
-A common assumption is that ZK privacy belongs on an L2 or a sidechain. With current mainnet gas, that assumption is dated. The verifier deploys onchain like any other contract, and a single proof verification fits comfortably in the cents-per-call range during normal load.
+The right stack depends on the job. Circom with snarkjs is a long-running path for app-level circuits. Noir with Barretenberg is a newer developer-friendly path. ZoKrates is an Ethereum-oriented zkSNARK toolbox. Halo2 and gnark are lower-level circuit libraries. zkVMs such as RISC Zero or SP1 prove normal programs, but can be heavier than a small custom circuit.
+
+For anonymous membership, study reusable protocols before designing from scratch. Semaphore packages group membership and nullifier-based double-use prevention into contracts and JavaScript libraries. For private voting and governance, MACI is the specialized path because it adds anti-collusion properties. Mature primitives are often safer than new circuits.
+
+Hash choice matters inside circuits. General-purpose hashes such as SHA-256 are expensive to express as arithmetic constraints. Proof-friendly hashes such as Poseidon are designed for this environment and are usually a better fit. Check the current documentation for the proving system you use.
+
+## The wallet catch
+
+Even a perfect proof fails if the wallet flow leaks the link. Register from wallet A and later act from wallet A, and anyone watching can connect the transactions. Fund wallet B from wallet A right before acting, and that funding transaction creates the same problem.
+
+This is why relayers and paymasters matter. The acting wallet should be fresh, and it should not need to receive ETH from a wallet the user is trying to separate from the action.
+
+The same problem exists offchain. Submitting registration and action transactions from the same IP address, RPC provider, or session can weaken the privacy the circuit gives you. Frontends can leak through analytics, local storage, and support logs. A zero-knowledge proof hides the values inside the proof. It does not hide everything around the transaction.
+
+Public inputs are another place privacy apps fail. Anything marked public in the circuit, emitted as an event, included in calldata, or stored by the contract is visible. Review public inputs as carefully as you review Solidity access control.
+
+There are also product and legal constraints. Privacy tools have legitimate uses, but mixer-style flows and private transfers may face regulatory scrutiny. Builders should understand the rules that apply to their product and jurisdiction.
+
+## Mainnet or L2
+
+Privacy apps can run on Ethereum Mainnet because verifier contracts are ordinary smart contracts. When gas is low and the action is high value, Mainnet can be a reasonable place to verify proofs.
+
+That does not make L2s obsolete. If the app needs frequent actions, low-value transactions, or many cheap registrations to grow its anonymity set, an L2 may still be better. The right deployment target depends on cost tolerance, liquidity needs, censorship-resistance needs, and where the users already are.
 
 ## What this changes for builders
 
-Privacy on Ethereum is no longer a research story. The commitment-and-nullifier pattern is small enough to prototype in an afternoon, the prover runs in seconds in the browser, and the wallet plumbing the design depends on (relayers, ERC-4337 paymasters) is the same plumbing modern apps already use for sponsored gas. If your product needs anonymous membership, anonymous voting, anonymous claims, or a private withdrawal flow, the building blocks exist on mainnet today. The remaining work is product design, key management, and growing the anonymity set, not waiting for the cryptography to be ready.
+Privacy on Ethereum is no longer only a research story. Builders can compose the pieces into real applications: a circuit for the private statement, a verifier for proof checking, an app contract for public rules, an indexer for Merkle data, and a relayer or paymaster for unlinkable submission.
 
-## Further Reading
+The hard parts are product design, key management, metadata hygiene, audits, compliance, and growing the anonymity set. The proof can show that a user is eligible without revealing who they are. The rest of the app has to avoid leaking that answer somewhere else.
 
-- [Noir Documentation](https://noir-lang.org/)
-- [ethskills.com/noir](https://ethskills.com/noir)
-- [ZK Voting Challenge on SpeedRunEthereum](https://speedrunethereum.com/challenge/zk-voting)
-- [Aztec Network](https://aztec.network)
-- [Poseidon Hash Function](https://eprint.iacr.org/2019/458)
-- [EIP-4337: Account Abstraction via EntryPoint Contract](https://eips.ethereum.org/EIPS/eip-4337)
+## Further reading
+
+1. [Semaphore Documentation](https://docs.semaphore.pse.dev/)
+2. [MACI Documentation](https://maci.pse.dev/)
+3. [Circom Documentation](https://docs.circom.io/)
+4. [Noir Documentation](https://noir-lang.org/)
+5. [ZoKrates Documentation](https://zokrates.github.io/)
+6. [EIP-4337: Account Abstraction via EntryPoint Contract](https://eips.ethereum.org/EIPS/eip-4337)
