@@ -48,7 +48,7 @@ The infrastructure layer beneath the agents article. What "decentralized AI" act
 
 The flagship article. Resets the two assumptions builders form between 2021 and 2023, that mainnet is permanently expensive and that user accounts are static EOAs.
 
-**Status:** Drafted, file `article-building-on-ethereum-2026.md`.
+**Status:** Published, live at https://ethereum.org/latest/building-on-ethereum-in-2026/ (verified 24 Sep 2026 via the website repo, `public/content/latest/building-on-ethereum-in-2026/index.md`). Draft file `article-building-on-ethereum-2026.md`.
 
 **Key points (as written):**
 - Mainnet fees fell across three upgrades (Dencun March 2024, Pectra May 2025, Fusaka December 2025). As of May 5, 2026, Etherscan shows standard gas around 0.15 gwei, with daily averages near 0.5 gwei through April
@@ -115,7 +115,7 @@ How L1 and L2s fit together, and what "compose" actually means across them. Pair
 
 Anonymous membership as the reusable privacy pattern. Register, build the crowd, act anonymously.
 
-**Status:** Drafted, file `article-privacy-on-ethereum-zk.md`. Merged 2026-05-08 (commit `3587fac`).
+**Status:** Published, live at https://ethereum.org/latest/privacy-apps-on-ethereum/ (verified 24 Sep 2026). Merged 2026-05-08. Draft file `article-privacy-on-ethereum-zk.md`.
 
 **Key points (as written):**
 - The pattern has three pieces. A commitment hash registers each member, a Merkle tree of commitments forms the anonymity set, a zero-knowledge proof plus a nullifier hash lets one member act once without revealing which one
@@ -181,7 +181,7 @@ How to build a tokenized vault that doesn't get drained on day one.
 
 First-principles "why this platform" piece. Builders choose infrastructure by the promises their app needs to keep.
 
-**Status:** Drafted, file `article-why-build-on-ethereum.md`. Verified-figures reference at `research-2026-04-25-why-ethereum.md`.
+**Status:** Published, live at https://ethereum.org/latest/why-build-on-ethereum/ (verified 24 Sep 2026, HTTP 200). Draft file `article-why-build-on-ethereum.md`. Verified-figures reference at `research-2026-04-25-why-ethereum.md`.
 
 **Key points (as written):**
 - Decentralization is the foundation. ~13,700 to 14,000 nodes (April 2026 Etherscan tracker) across many countries, ~32-36M ETH staked (~27-29% of supply), execution clients Geth ~50% / Nethermind ~25% / Besu ~9% / Reth ~8% / Erigon ~7%. Geth's near-50% share is the live fragility
