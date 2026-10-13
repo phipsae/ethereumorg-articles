@@ -62,7 +62,7 @@ For app builders, the Hegotá item to watch most closely is account abstraction.
 
 That changes product assumptions. Gas sponsorship becomes a native account pattern instead of infrastructure every app has to arrange separately. Alternative signature schemes become easier to support, including passkeys today and a path away from ECDSA if post-quantum migration becomes necessary. If EIP-8141 or a similar native account abstraction design lands, the builder model shifts from "an EOA signs a transaction" to "an account defines how it validates, pays for, and executes a transaction."
 
-That is the direction, not a promise. EIP-8141 is Draft, and as of May 2026 it is only "considered for inclusion" in Hegotá, meaning client teams are discussing it but have not committed to shipping it in that upgrade. The practical 2026 build path for account UX is still EIP-7702 plus ERC-4337 wallet flows, but builders should design as if programmable accounts are becoming the default account model.
+That is the direction, not a promise. EIP-8141 is Draft, but since 27 August 2026 it is "scheduled for inclusion" in Hegotá, meaning core developers intend to include it and expect it to ship barring unforeseen issues. Hegotá is not expected before 2027. The practical 2026 build path for account UX is still EIP-7702 plus ERC-4337 wallet flows, but builders should design as if programmable accounts are becoming the default account model.
 
 ## What to build differently now
 
